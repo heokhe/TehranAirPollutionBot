@@ -1,0 +1,30 @@
+{
+  "private": true,
+  "version": "1.0.0",
+  "description": "A bot for inspecting the air pollution in Tehran",
+  "main": "index.js",
+  "dependencies": {
+    "cheerio": "^1.0.0-rc.3",
+    "dotenv": "^7.0.0",
+    "esm": "^3.2.25",
+    "superagent": "^5.1.1",
+    "telegraf": "^3.34.1"
+  },
+  "scripts": {
+    "start": "node -r esm index.js",
+    "dev": "nodemon -r esm index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hkh12/TehranAirPollutionBot.git"
+  },
+  "author": "Hosein Khansari <hrk.x11@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/hkh12/TehranAirPollutionBot/issues"
+  },
+  "homepage": "https://github.com/hkh12/TehranAirPollutionBot#readme",
+  "devDependencies": {
+    "nodemon": "^2.0.1"
+  }
+}
