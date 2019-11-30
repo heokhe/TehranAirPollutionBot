@@ -1,6 +1,6 @@
 import dotenv from 'dotenv';
 import Telegraf from 'telegraf';
-import { scrape } from './scraper';
+import { DataSource } from './data-source';
 import { writeMessage } from './message';
 import { loggerFactory } from './log';
 
@@ -26,21 +26,23 @@ bot.start(ctx => ctx.reply(`
 سلام! برای مطلع شدن از وضعیت آلودگی هوای تهران از فرمان /now استفاده کنید.
 `));
 
+const dataSource = new DataSource();
+dataSource.on('error', err => bot.context.log(err));
+
 bot.command('/now', async ctx => {
   try {
-    const data = await scrape();
+    const data = await dataSource.getData();
     ctx.reply(writeMessage(data), {
       parse_mode: 'Markdown'
     });
-  } catch (e) {
-    ctx.reply('خطایی رخ داد. لطفا بعدا امتحان کنید.');
-    ctx.log(e);
+  } catch (_) {
+    ctx.reply('خطایی رخ داد. لطفا دوباره امتحان کنید.');
   }
 });
 
 bot.on('inline_query', async ctx => {
   try {
-    const data = await scrape();
+    const data = await dataSource.getData();
     return ctx.answerInlineQuery([{
       type: 'article',
       id: ctx.inlineQuery.id,
@@ -51,8 +53,7 @@ bot.on('inline_query', async ctx => {
         parse_mode: 'Markdown'
       }
     }]);
-  } catch (e) {
-    bot.log(e);
+  } catch (_) {
     return ctx.answerInlineQuery([]);
   }
 });
