@@ -1,7 +1,7 @@
 import cheerio from 'cheerio';
 import superagent from 'superagent';
 
-const TARGET_URL = 'http://airnow.tehran.ir/';
+const { TARGET_URL } = process.env;
 
 export async function fetchData() {
   const { text: html } = await superagent.get(TARGET_URL),
