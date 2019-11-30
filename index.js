@@ -7,7 +7,7 @@ import { loggerFactory } from './log';
 dotenv.config();
 
 const {
-  TOKEN, API_ROOT, BOT_USERNAME, LOG_ID
+  TOKEN, API_ROOT, BOT_USERNAME, LOG_CHANNEL
 } = process.env;
 
 const bot = new Telegraf(TOKEN, {
@@ -19,7 +19,7 @@ const bot = new Telegraf(TOKEN, {
   }
 });
 
-bot.context.log = loggerFactory(bot, LOG_ID);
+bot.context.log = loggerFactory(bot, LOG_CHANNEL);
 bot.catch(err => bot.context.log(err));
 
 bot.start(ctx => ctx.reply(`
