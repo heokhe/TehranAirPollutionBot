@@ -1,10 +1,9 @@
 import cheerio from 'cheerio';
 import superagent from 'superagent';
 
-const { TARGET_URL } = process.env;
-
-export async function fetchData() {
-  const { text: html } = await superagent.get(TARGET_URL),
+/** @param {string} url */
+export async function fetchData(url) {
+  const { text: html } = await superagent.get(url),
     $ = cheerio.load(html);
   const numbers = $('.aqival'),
     index = parseInt(numbers.eq(1).text()),
