@@ -3,7 +3,7 @@ import superagent from 'superagent';
 
 const TARGET_URL = 'http://airnow.tehran.ir/';
 
-export async function scrape() {
+export async function fetchData() {
   const { text: html } = await superagent.get(TARGET_URL),
     $ = cheerio.load(html);
   const numbers = $('.aqival'),
