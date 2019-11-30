@@ -2,10 +2,9 @@ import dotenv from 'dotenv';
 import Telegraf from 'telegraf';
 import { scrape } from './scraper';
 import { writeMessage } from './message';
+import { loggerFactory } from './log';
 
-if (!process.env.TOKEN) {
-  dotenv.config();
-}
+dotenv.config();
 
 const {
   TOKEN, API_ROOT, BOT_USERNAME, LOG_ID
@@ -20,17 +19,7 @@ const bot = new Telegraf(TOKEN, {
   }
 });
 
-bot.context.log = err => {
-  if (LOG_ID) {
-    bot.telegram.sendMessage(LOG_ID, `⛔️ *Error: ${err.message}*
-
-${err}`, {
-      parse_mode: 'Markdown'
-    });
-  } else {
-    console.log(err);
-  }
-};
+bot.context.log = loggerFactory(bot, LOG_ID);
 bot.catch(err => bot.context.log(err));
 
 bot.start(ctx => ctx.reply(`
