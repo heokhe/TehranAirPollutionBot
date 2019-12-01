@@ -23,8 +23,11 @@ export class DataSource extends EventEmitter {
     try {
       const { now, last24hours } = await fetchData(this.TARGET_URL);
       if (!this.isReady) this.isReady = true;
-      this.now = now;
-      this.last24hours = last24hours;
+      if (this.now !== now || this.last24hours !== last24hours) {
+        this.last24hours = last24hours;
+        this.now = now;
+        this.emit('update', { now, last24hours });
+      }
     } catch (e) {
       this.emit('error', e);
       if (throwErrors) throw e;

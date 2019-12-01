@@ -7,7 +7,7 @@ import { loggerFactory } from './log';
 dotenv.config();
 
 const {
-  TOKEN, API_ROOT, BOT_USERNAME, LOG_CHANNEL
+  TOKEN, API_ROOT, BOT_USERNAME, LOG_CHANNEL, CHANNEL
 } = process.env;
 
 const bot = new Telegraf(TOKEN, {
@@ -60,6 +60,13 @@ bot.on('inline_query', async ctx => {
   } catch (_) {
     return ctx.answerInlineQuery([]);
   }
+});
+
+dataSource.on('update', data => {
+  if (!CHANNEL) return;
+  bot.telegram.sendMessage(CHANNEL, writeMessage(data), {
+    parse_mode: 'Markdown'
+  });
 });
 
 bot.startPolling();
