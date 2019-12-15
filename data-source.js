@@ -4,7 +4,6 @@ import { fetchData } from './scraper';
 export class DataSource extends EventEmitter {
   constructor() {
     super();
-    this.TARGET_URL = process.env.TARGET_URL;
     this.now = 0;
     this.last24hours = 0;
     this.isReady = false;
@@ -21,7 +20,7 @@ export class DataSource extends EventEmitter {
 
   async update(throwErrors = false) {
     try {
-      const { now, last24hours } = await fetchData(this.TARGET_URL);
+      const { now, last24hours } = await fetchData();
       if (!this.isReady) this.isReady = true;
       if (this.now !== now || this.last24hours !== last24hours) {
         this.last24hours = last24hours;

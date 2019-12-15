@@ -1,9 +1,10 @@
 import cheerio from 'cheerio';
 import superagent from 'superagent';
 
-/** @param {string} url */
-export async function fetchData(url) {
-  const { text: html } = await superagent.get(url).timeout(30000),
+export async function fetchData() {
+  // extracted from .env before bot.startPolling() gets called:
+  const url = process.env.TARGET_URL,
+    { text: html } = await superagent.get(url).timeout(30000),
     $ = cheerio.load(html),
     numbers = $('.aqival');
 
