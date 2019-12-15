@@ -31,7 +31,9 @@ dataSource.on('error', err => bot.context.log(err));
 
 bot.command('/now', async ctx => {
   const chatId = ctx.chat.id,
-    { message_id: messageId } = await ctx.reply('🌀 چند لحظه صبر کنید...');
+    { message_id: messageId } = await ctx.reply('🌀 چند لحظه صبر کنید...', {
+      reply_to_message_id: ctx.message.message_id
+    });
   try {
     const data = await dataSource.getData();
     bot.telegram.editMessageText(chatId, messageId, undefined, writeMessage(data), {
