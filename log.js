@@ -5,9 +5,18 @@
 export function loggerFactory(bot, logChannelId) {
   return err => {
     if (logChannelId) {
-      bot.telegram.sendMessage(logChannelId, `⛔️ *Error: ${err.message}*
+      const stackTrace = err.stack
+        ? err.stack
+          .split('\n')
+          .slice(1)
+          .map(line => line.trim())
+          .join('\n')
+        : '';
+      bot.telegram.sendMessage(logChannelId, `
+⛔️ *Error: ${err.message}*
 
-${err}`, {
+\`${stackTrace}\`
+`, {
         parse_mode: 'Markdown'
       });
     } else {
