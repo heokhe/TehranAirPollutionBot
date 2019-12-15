@@ -62,6 +62,13 @@ bot.on('inline_query', async ctx => {
   }
 });
 
+bot.hears('clear', ctx => {
+  if (ctx.from.username === 'hkh12') {
+    dataSource.clear();
+    ctx.reply('✅ حافظه موقت پاک شد.');
+  }
+});
+
 dataSource.on('update', data => {
   if (!CHANNEL) return;
   bot.telegram.sendMessage(CHANNEL, writeMessage(data), {

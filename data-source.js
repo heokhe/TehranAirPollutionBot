@@ -33,4 +33,10 @@ export class DataSource extends EventEmitter {
       if (throwErrors) throw e;
     }
   }
+
+  clear() {
+    this.isReady = false;
+    this.now = 0;
+    this.last24hours = 0;
+  }
 }
