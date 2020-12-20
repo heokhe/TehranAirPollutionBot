@@ -30,19 +30,19 @@ const dataSource = new DataSource();
 dataSource.on('error', err => bot.context.log(err));
 
 bot.command('/now', async ctx => {
-  const chatId = ctx.chat.id,
-    { message_id: messageId } = await ctx.reply('🌀 چند لحظه صبر کنید...', {
-      reply_to_message_id: ctx.message.message_id
-    });
+  const chatId = ctx.chat.id;
+  if (!dataSource.isReady) await ctx.telegram.sendChatAction(chatId, 'typing');
+
   try {
     const data = await dataSource.getData();
-    bot.telegram.editMessageText(chatId, messageId, undefined, writeMessage(data), {
+    await ctx.reply(writeMessage(data), {
+      reply_to_message_id: ctx.message.message_id,
       parse_mode: 'Markdown'
     });
   } catch (_) {
-    bot.telegram.editMessageText(chatId, messageId, undefined, `
-    😕 خطایی رخ داد. لطفا دوباره امتحان کنید.
-    `.trim());
+    await ctx.reply('😕 خطایی رخ داد. لطفا دوباره امتحان کنید.', {
+      reply_to_message_id: ctx.message.message_id
+    });
   }
 });
 
